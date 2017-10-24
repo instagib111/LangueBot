@@ -22,7 +22,7 @@ bot.on('message', function(message){
     catch(e){
         console.log(e);
     }
-    if (pre === prefix){
+    if (pre.toLowerCase() === prefix){
         if (regTran.test(cmd) && arg.trim().length > 2 ){
             let from = cmd.split('-')[0]
             let to = cmd.split('-')[1]
