@@ -33,7 +33,9 @@ bot.on('message', function(message){
                 target : to
             }, 
             (res) => {
-                message.reply(res.translation)
+                // si le channel est [langue], envoyer les réponses dans 
+                // une prase écrite en [langue], default Français.
+                message.channel.send("_" + arg + "_ => " + "_" + res.translation + "_")
             })
         }
     }
