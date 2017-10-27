@@ -15,8 +15,8 @@ npm install --save deepl-translator
 https://discordapp.com/oauth2/authorize?client_id=372088475387953162&scope=bot&permissions=19456
 
 # Command
-!langue en-fr dog
-reply : chien
+* !langue en-fr dog
+* reply : chien
 
-!langue fr-en chien
-reply : dog
+* !langue fr-en chien
+* reply : dog
