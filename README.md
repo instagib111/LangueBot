@@ -6,8 +6,11 @@ Deepl translate API on discord
 Nodejs 6.11.4 LTS
 
 npm install --save discord.js
+
 npm install --save request-promise
+
 npm install --save request-promise
+
 npm install --save deepl-translator
 
 
