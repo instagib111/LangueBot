@@ -1,5 +1,5 @@
 const disc = require("discord.js")
-const tran = require('node-google-translate-skidz')
+const { translate, detectLanguage } = require('deepl-translator');
 
 const bot = new disc.Client()
 const prefix = "!langue"
@@ -27,16 +27,9 @@ bot.on('message', function(message){
             let from = cmd.split('-')[0]
             let to = cmd.split('-')[1]
 
-            tran({
-                text : arg, 
-                source : from, 
-                target : to
-            }, 
-            (res) => {
-                // si le channel est [langue], envoyer les réponses dans 
-                // une prase écrite en [langue], default Français.
-                message.channel.send("_" + arg + "_ => " + "_" + res.translation + "_")
-            })
+            translate(arg, from.toUpperCase(), to.toUpperCase())
+            .then(res => message.channel.send("_" + arg + "_ => " + "_" + res.translation + "_") )
+            .catch( e => message.channel.send(e))
         }
     }
 })
