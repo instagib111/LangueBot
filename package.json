@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "deepl-translator": "^1.1.0",
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "word-definition": "^2.1.6"
   }
 }
