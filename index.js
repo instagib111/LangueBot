@@ -1,8 +1,9 @@
 const disc = require("discord.js")
 const { translate, detectLanguage } = require('deepl-translator');
 const dic = require("word-definition")
-const conf = require("./config.json")
+const gen = require("gender-fr")
 
+const conf = require("./config.json")
 const bot = new disc.Client()
 const prefix = conf.prefix
 
@@ -21,8 +22,9 @@ bot.on('message', function(message){
     try{
         pre = message.content[0]
         cmd = message.content.split(' ')[0].substring(1)
-        arg = message.content.split(pre + cmd)[1].trim()
-
+        try {
+            arg = message.content.split(pre + cmd)[1].trim()
+        }catch (e){}
     }
     catch(e){
         console.log(e);
@@ -36,13 +38,31 @@ bot.on('message', function(message){
             .then(res => message.channel.send("_" + arg + "_ => " + "_" + res.translation + "_") )
             .catch( e => message.channel.send(e))
         }
-        if(def === cmd && regWord.test(arg)){
+        if(def === cmd && regWord.test(arg)){ // wikitionary
             let lang = message.channel.name == "anglais" ? "en" : "fr" 
             dic.getDef(arg, lang, {exact : false}, (def) => {
-                let res = "__" + def.word + "__, " + def.category + 
-                    " : \r  `" + def.definition +"`" 
-                if(!def.err){
-                    message.channel.send(res)
+                let genderOfNoun = ""
+                let res = ""
+                if (lang == "fr" && def.category == "nom"){
+                    gen.gendersForNoun(def.word, (e, g) => {
+                        if (g[0] == 'f')
+                            genderOfNoun = " féminin"
+                        else if (g[0] == 'm')
+                            genderOfNoun = " masculin"
+
+                        res = "__" + def.word + "__, " + def.category + genderOfNoun + 
+                            " : \r  `" + def.definition + "`" 
+
+                        if(!def.err)
+                            message.channel.send(res)
+                    })
+                } 
+                else {
+                    res = "__" + def.word + "__, " + def.category + 
+                        " : \r  `" + def.definition + "`" 
+
+                    if(!def.err)
+                        message.channel.send(res)
                 }
             })
         }
