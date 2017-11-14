@@ -44,18 +44,26 @@ bot.on('message', function(message){
                 let genderOfNoun = ""
                 let res = ""
                 if (lang == "fr" && def.category == "nom"){
-                    gen.gendersForNoun(def.word, (e, g) => {
-                        if (g[0] == 'f')
-                            genderOfNoun = " féminin"
-                        else if (g[0] == 'm')
-                            genderOfNoun = " masculin"
-
-                        res = "__" + def.word + "__, " + def.category + genderOfNoun + 
-                            " : \r  `" + def.definition + "`" 
-
-                        if(!def.err)
-                            message.channel.send(res)
-                    })
+                    try {
+                        gen.gendersForNoun(def.word, (e, g) => {
+                            gen.addDefiniteArticle(def.word, (er, definite) => {
+                                gen.addIndefiniteArticle(def.word, (err, indefinite) => {
+                                    if (g[0] == 'f')
+                                        genderOfNoun = " féminin (" + definite + "; " + indefinite + ")"
+                                    else if (g[0] == 'm')
+                                        genderOfNoun = " masculin (" + definite + "; " + indefinite + ")"
+                                    
+                                    res = "__" + def.word + "__, " + def.category + genderOfNoun + 
+                                        " : \r  `" + def.definition + "`" 
+                                    
+                                    if(!def.err)
+                                        message.channel.send(res)
+                                })
+                            })
+                        })
+                    }catch(e){
+                        console.log(e)
+                    }
                 } 
                 else {
                     res = "__" + def.word + "__, " + def.category + 
@@ -66,6 +74,7 @@ bot.on('message', function(message){
                 }
             })
         }
+        
     }
 })
 
