@@ -34,7 +34,7 @@ bot.on('message', function(message){
             let from = cmd.split('-')[0]
             let to = cmd.split('-')[1]
 
-            translate(arg, from.toUpperCase(), to.toUpperCase())
+            translate(arg, to.toUpperCase(), from.toUpperCase())
             .then(res => message.channel.send("_" + arg + "_ => " + "_" + res.translation + "_") )
             .catch( e => message.channel.send(e))
         }
